@@ -1,1 +1,1 @@
-export * from "./service-error.utils"
+export * from "./service-error.util"
