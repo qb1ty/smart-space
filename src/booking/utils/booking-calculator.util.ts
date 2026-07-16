@@ -16,3 +16,11 @@ export function calculateTotalCost(startTime: Date, endTime: Date, pricePerHour:
     const durationHour = (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60)
     return Math.ceil(durationHour * pricePerHour)
 }
+
+export function calculateRescheduleDifference(
+    oldCost: number,
+    newCost: number,
+    rescheduleFee: number = 100
+) {
+    return (newCost- oldCost) + rescheduleFee
+}
