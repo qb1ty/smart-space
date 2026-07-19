@@ -11,7 +11,7 @@ export class ReportsService {
 
   constructor(private prisma: PrismaService) {}
 
-  async getDashboardStats(take: number, query: GetReportQueryDto) {
+  async getDashboardStats(query: GetReportQueryDto) {
     const { to, from } = query
 
     try {
@@ -20,7 +20,7 @@ export class ReportsService {
       const [revenueResult, totalBookings, topSpacesRaw, cancelledBookings] = await this.prisma.$transaction([
         getTotalRevenueQuery(this.prisma, activeFilter),
         getBookingsCountQuery(this.prisma, activeFilter),
-        getTopSpacesQuery(this.prisma, activeFilter, take),
+        getTopSpacesQuery(this.prisma, activeFilter),
         getCancelledBookingsCountQuery(this.prisma, from, to)
       ])
 
@@ -57,7 +57,7 @@ export class ReportsService {
     }
   }
 
-  async getWorkspacesEfficiency(period: number, query: GetReportQueryDto) {
+  async getWorkspacesEfficiency(query: GetReportQueryDto) {
     const { from, to } = query
 
     try {
@@ -82,7 +82,7 @@ export class ReportsService {
           bookingCount: spaceBookings.length,
           bookedHours: Math.round(bookedHours),
           revenue: totalRevenue,
-          occupancyRate: calculateOccupancyRate(bookedHours, period)
+          occupancyRate: calculateOccupancyRate(bookedHours)
         }
       })
 

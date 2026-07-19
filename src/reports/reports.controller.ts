@@ -1,9 +1,27 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, UseGuards, Query } from '@nestjs/common';
+import { AdminGuard, AuthGuard } from 'src/common/guard';
 import { ReportsService } from './reports.service';
-import { CreateReportDto } from './dto/get-report-query.dto';
-import { UpdateReportDto } from './dto/update-report.dto';
+import { GetReportQueryDto } from './dto/get-report-query.dto';
 
-@Controller('reports')
+@Controller("reports")
 export class ReportsController {
   constructor(private readonly reportsService: ReportsService) {}
+
+  @Get("dashboard")
+  @UseGuards(AuthGuard, AdminGuard)
+  async getDashboard(@Query() dto: GetReportQueryDto) {
+    return this.reportsService.getDashboardStats(dto)
+  }
+
+  @Get("workspaces")
+  @UseGuards(AuthGuard, AdminGuard)
+  async getWorkspaces(@Query() dto: GetReportQueryDto) {
+    return this.reportsService.getWorkspacesEfficiency(dto)
+  }
+
+  @Get("users-activity")
+  @UseGuards(AuthGuard, AdminGuard)
+  async getUsersActivity(@Query() dto: GetReportQueryDto) {
+    return this.reportsService.getUsersActivity(dto)
+  }
 }

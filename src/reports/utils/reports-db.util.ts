@@ -35,8 +35,7 @@ export function getBookingsCountQuery(
 
 export function getTopSpacesQuery(
     prisma: PrismaClient,
-    where: Prisma.BookingWhereInput,
-    take: number
+    where: Prisma.BookingWhereInput
 ) {
      return prisma.booking.groupBy({
         by: ["spaceId"],
@@ -44,7 +43,7 @@ export function getTopSpacesQuery(
         _sum: { totalCost: true },
         where,
         orderBy: { _count: { id: "desc" } },
-        take
+        take: 5
     })
 }
 
