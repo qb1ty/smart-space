@@ -10,6 +10,10 @@ export class AdminGuard implements CanActivate {
             throw new ForbiddenException("Вы не являетесь админом")
         }
 
+        if (!req.session.isActive) {
+            throw new ForbiddenException("Вам запрещен доступ к использованию")
+        }
+
         return true
     }
 }

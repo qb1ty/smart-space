@@ -1,4 +1,4 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
+import { CanActivate, ExecutionContext, ForbiddenException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { Request } from "express";
 
 @Injectable()
@@ -8,6 +8,10 @@ export class AuthGuard implements CanActivate {
 
         if (!req.session || !req.session.userId) {
             throw new UnauthorizedException("Пользователь не авторизован")
+        }
+
+        if (!req.session.isActive) {
+            throw new ForbiddenException("Вам запрещен доступ к использованию")
         }
 
         return true
